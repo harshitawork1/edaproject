@@ -40,7 +40,8 @@ pip install streamlit pandas seaborn matplotlib
 # run application
 streamlit run eda_app.py
 
-<img width="1557" height="831" alt="image" src="https://github.com/user-attachments/assets/d89108b2-0b3a-4808-abb3-3acfb1726f1e" />
+<img width="1076" height="675" alt="image" src="https://github.com/user-attachments/assets/1af16c74-9b70-4460-9cd4-f19358fe1f6d" />
+
 <img width="1007" height="790" alt="image" src="https://github.com/user-attachments/assets/c769d895-0e03-4d2f-90d3-648d8c6d17be" />
 <img width="993" height="841" alt="image" src="https://github.com/user-attachments/assets/1b21b640-e7df-4e7b-9639-42fcb4877417" />
 <img width="950" height="858" alt="image" src="https://github.com/user-attachments/assets/2b2dc485-6ff6-4ff6-bca5-5eae7fe2bd07" />
