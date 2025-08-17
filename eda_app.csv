@@ -1,0 +1,72 @@
+import streamlit as st
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+st.title("Interactive EDA Tool (with Insights)")
+
+# Step 1 – Upload CSV
+uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
+
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+
+    # Preview
+    st.subheader("Preview of Dataset")
+    st.dataframe(df.head())
+
+    # Basic Info
+    st.subheader("Dataset Info")
+    st.write(f"➡ Rows: {df.shape[0]}")
+    st.write(f"➡ Columns: {df.shape[1]}")
+    st.write("➡ Column Types:")
+    st.write(df.dtypes)
+
+    # Missing Values
+    missing = df.isnull().sum()
+    st.write("➡ Missing Values:")
+    st.write(missing)
+    if missing.sum() == 0:
+        st.info("✅ No missing values detected.")
+    else:
+        st.warning("⚠ Dataset contains missing values.")
+
+    # Step 2 – EDA Options
+    st.subheader("Select an analysis option")
+    option = st.selectbox(
+        "Choose an option",
+        ("Summary Statistics", "Column Distribution", "Correlation Heatmap")
+    )
+
+    if option == "Summary Statistics":
+        st.write(df.describe())
+
+    elif option == "Column Distribution":
+        numeric_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+        selected_col = st.selectbox("Select a numeric column", numeric_cols)
+        fig, ax = plt.subplots()
+        sns.histplot(df[selected_col], kde=True, ax=ax)
+        st.pyplot(fig)
+        st.success(f"ℹ Distribution plot for **{selected_col}** shows how the values are spread.")
+
+    elif option == "Correlation Heatmap":
+        numeric_df = df.select_dtypes(include=['int64', 'float64'])
+        fig, ax = plt.subplots()
+        sns.heatmap(numeric_df.corr(), annot=True, ax=ax)
+        st.pyplot(fig)
+        st.success("ℹ In the heatmap, values close to 1 indicate strong positive relationship and values close to 0 indicate weak relationship.")
+
+    # Step 3 – Auto Insights Section
+    st.subheader("📌 Top Insights")
+
+    # Average of numeric columns
+    numeric_cols = df.select_dtypes(include=['int64', 'float64']).columns
+    for col in numeric_cols:
+        st.write(f"• Average {col}: **{round(df[col].mean(),2)}**")
+
+    # Most frequent category for categorical columns
+    categorical_cols = df.select_dtypes(include=['object']).columns
+    for col in categorical_cols:
+        most_common = df[col].value_counts().idxmax()
+        st.write(f"• Most common value in **{col}**: {most_common}")
+
